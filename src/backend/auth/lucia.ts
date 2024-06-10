@@ -1,5 +1,7 @@
 import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
 import { sessionTable, userTable } from "~/backend/database/schema";
+import { webcrypto } from "node:crypto";
+globalThis.crypto = webcrypto as Crypto;
 import { db } from "~/backend/database";
 import { Lucia } from "lucia";
 
