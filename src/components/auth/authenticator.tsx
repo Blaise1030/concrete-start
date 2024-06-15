@@ -7,7 +7,8 @@ import { Icon } from "@iconify-icon/solid";
 import { cn } from "~/lib/utils";
 import { api } from "~/lib/api";
 import { z } from "zod";
-import { useLocation } from "@solidjs/router";
+import { A, useLocation } from "@solidjs/router";
+import { Card } from "../ui/card";
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -29,50 +30,25 @@ export default function Home() {
   };
 
   return (
-    <div class="w-screen h-screen flex flex-row">
-      <section class="bg-black h-full w-[50%] lg:block hidden relative border-e">
-        <img
-          src="/background.jpeg"
-          alt="background"
-          class="w-full h-full absolute object-cover opacity-50"
-        />
-        <div class="flex flex-col mx-auto sm:p-6 md:p-8 h-full absolute text-white">
-          <header>
-            <h1 class="text-xl tracking-tighter font-semibold">⌘ Acme Inc.</h1>
-          </header>
-          <div class="flex-grow" />
-          <blockquote class="space-y-2">
-            <p class="text-lg">
-              “This library has saved me countless hours of work and helped me
-              deliver stunning designs to my clients faster than ever before.”
-            </p>
-            <footer class="text-sm">Sofia Davis</footer>
-          </blockquote>
-        </div>
-      </section>
-      <section class="bg-background h-full lg:w-[50%] w-full flex items-center dark:bg-grid-white/5 bg-grid-black/5">
-        <div class="p-2 md:p-8 top-0 right-0 fixed">
-          <Button
-            disabled={loginForm.submitting}
-            variant={"link"}
-            onClick={() => {
-              setIsLogin((a) => !a);
-            }}
-          >
-            {isLogin() ? "Register" : "Sign In"}
-          </Button>
-        </div>
-        <div class="mx-auto max-w-sm w-full flex flex-col space-y-4 ">
-          <header class="flex flex-col">
+    <div class="w-screen h-screen flex flex-row relative overflow-hidden isolate">
+      <header class="fixed top-0 left-0 p-6 px-4 md:px-6 py-4 w-full">
+        <h1 class="text-xl tracking-tighter font-semibold w-full text-center">
+          <A href="/">⌘</A>
+        </h1>
+      </header>
+      <div class="mx-auto max-w-sm w-full justify-center flex flex-col p-2">
+        <div class="flex flex-col space-y-4 p-4">
+          <div class="flex flex-col items-center text-center">
             <h2 class="font-bold text-2xl">
-              {isLogin() ? "Welcome Back!" : "Join Us!"}
+              {isLogin() ? "Welcome back" : "Join Us!"}
             </h2>
             <p class="text-muted-foreground">
               {isLogin()
                 ? "Log In to Your Account"
                 : "Create Your Free Account"}
             </p>
-          </header>
+          </div>
+          <br />
           <Form class="flex flex-col space-y-2" onSubmit={onSubmit}>
             <Field name="email">
               {(field, props) => (
@@ -120,7 +96,23 @@ export default function Home() {
               {isLogin() ? "Sign In" : "Register"}
             </Button>
           </Form>
-          <div class="pb-2">
+          <span class="text-sm text-muted-foreground text-center">
+            {!isLogin()
+              ? "Already have an account ?"
+              : "Don't have an account ?"}
+
+            <Button
+              disabled={loginForm.submitting}
+              variant={"link"}
+              size={"sm"}
+              onClick={() => {
+                setIsLogin((a) => !a);
+              }}
+            >
+              {isLogin() ? "Register" : "Sign In"}
+            </Button>
+          </span>
+          <div class="py-2">
             <div class="border-b items-center justify-center flex">
               <div class="text-xs text-muted-foreground w-fit -mb-[10px] bg-background px-2">
                 OR CONTINUE WITH
@@ -136,7 +128,7 @@ export default function Home() {
             Google
           </Button>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

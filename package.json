@@ -23,6 +23,7 @@
     "@solidjs/start": "^1.0.1",
     "@trpc/client": "^10.45.2",
     "@trpc/server": "^10.45.2",
+    "arctic": "^1.9.1",
     "autoprefixer": "^10.4.19",
     "better-sqlite3": "^9.6.0",
     "class-variance-authority": "^0.7.0",
