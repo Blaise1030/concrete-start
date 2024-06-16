@@ -18,5 +18,5 @@ export const useScrollDirection = () => {
     }
   }, [lastScrollY]);
 
-  return { scrollDirection };
+  return { scrollDirection, lastScrollY };
 };

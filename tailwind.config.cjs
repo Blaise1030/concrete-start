@@ -7,7 +7,7 @@ const {
 
 module.exports = {
   darkMode: ["class", '[data-kb-theme="dark"]'],
-  content: ["./src/**/*.{ts,tsx}"],
+  content: ["./src/**/*.{ts,tsx}", "./public/**/*.{ts,tsx,svg}"],
   theme: {
     container: {
       center: true,

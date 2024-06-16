@@ -1,11 +1,19 @@
-import { JSX, splitProps, ValidComponent } from "solid-js";
+import { createSignal, JSX, splitProps, ValidComponent } from "solid-js";
 
 import { PolymorphicProps } from "@kobalte/core";
 import * as NavigationMenuPrimitive from "@kobalte/core/navigation-menu";
 
 import { cn } from "~/lib/utils";
 
-const NavigationMenuItem = NavigationMenuPrimitive.Menu;
+type NavigationMenuItemProps<T extends ValidComponent = "ul"> =
+  NavigationMenuPrimitive.NavigationMenuItemProps<T> & {
+    class?: string | undefined;
+    children?: JSX.Element;
+  };
+
+const NavigationMenuItem = <T extends ValidComponent = "ul">(
+  props: PolymorphicProps<T, NavigationMenuItemProps<T>>
+) => <NavigationMenuPrimitive.Menu modal {...props} />;
 
 type NavigationMenuProps<T extends ValidComponent = "ul"> =
   NavigationMenuPrimitive.NavigationMenuRootProps<T> & {
@@ -22,9 +30,18 @@ const NavigationMenu = <T extends ValidComponent = "ul">(
   ]);
   return (
     <NavigationMenuPrimitive.Root
-      gutter={6}
+      onValueChange={(v) => {
+        if (Boolean(v))
+          document
+            .getElementById("app")
+            ?.setAttribute("class", "scale-[95%] duration-200 delay-200");
+        else
+          document
+            .getElementById("app")
+            ?.setAttribute("class", "scale-[100%] duration-200");
+      }}
       class={cn(
-        "group/menu flex w-max flex-1 list-none items-center justify-center data-[orientation=vertical]:flex-col [&>li]:w-full",
+        "group/menu flex w-max flex-1 list-none items-center justify-center data-[orientation=vertical]:flex-col [&>li]:w-full z-20 space-x-2",
         local.class
       )}
       {...others}
@@ -49,7 +66,7 @@ const NavigationMenuTrigger = <T extends ValidComponent = "button">(
   return (
     <NavigationMenuPrimitive.Trigger
       class={cn(
-        "group/trigger inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[expanded]:bg-accent/50",
+        "group/trigger inline-flex h-9 w-full items-center justify-center whitespace-nowrap rounded-md px-3 text-sm font-medium transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50",
         local.class
       )}
       {...others}
@@ -67,7 +84,7 @@ const NavigationMenuIcon = () => {
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="relative top-px ml-1 size-3 transition duration-200 group-data-[expanded]/trigger:rotate-180 group-data-[orientation=vertical]/menu:-rotate-90 group-data-[orientation=vertical]/menu:group-data-[expanded]/trigger:rotate-90"
+        class="relative top-px ml-1 size-3 transition group-data-[expanded]/trigger:rotate-180 group-data-[orientation=vertical]/menu:-rotate-90 group-data-[orientation=vertical]/menu:group-data-[expanded]/trigger:rotate-90 duration-1000"
       >
         <path d="M6 9l6 6l6 -6" />
       </svg>
@@ -78,6 +95,7 @@ const NavigationMenuIcon = () => {
 type NavigationMenuViewportProps<T extends ValidComponent = "li"> =
   NavigationMenuPrimitive.NavigationMenuViewportProps<T> & {
     class?: string | undefined;
+    children?: JSX.Element;
   };
 
 const NavigationMenuViewport = <T extends ValidComponent = "li">(
@@ -85,21 +103,31 @@ const NavigationMenuViewport = <T extends ValidComponent = "li">(
 ) => {
   const [local, others] = splitProps(props as NavigationMenuViewportProps, [
     "class",
+    "children",
   ]);
   return (
-    <NavigationMenuPrimitive.Viewport
+    <div
       class={cn(
-        "pointer-events-none z-[1000] flex h-[var(--kb-navigation-menu-viewport-height)] w-[var(--kb-navigation-menu-viewport-width)] origin-[var(--kb-menu-content-transform-origin)] items-center justify-center overflow-x-clip overflow-y-visible rounded-md border bg-popover opacity-0 shadow-lg transition-[width,height] duration-200 ease-in data-[expanded]:pointer-events-auto data-[orientation=vertical]:overflow-y-clip data-[orientation=vertical]:overflow-x-visible data-[expanded]:rounded-md data-[expanded]:opacity-100 data-[expanded]:ease-out",
-        local.class
+        "fixed left-0 top-0 w-screen flex justify-center [&_.presentation]:w-full [&_.presentation]:bg-black"
       )}
-      {...others}
-    />
+    >
+      <NavigationMenuPrimitive.Viewport
+        {...others}
+        class={cn(
+          "origin-[var(--kb-menu-content-transform-origin)] -ms-2 relative h-screen w-screen overflow-hidden backdrop-filter from-1% bg-gradient-to-b from-popover via-popover/20 to-popover/0 backdrop-blur-xl text-popover-foreground data-[expanded]:animate-in animate-out fade-out data-[expanded]:fade-in ease-in ",
+          local.class
+        )}
+      >
+        {local.children}
+      </NavigationMenuPrimitive.Viewport>
+    </div>
   );
 };
 
 type NavigationMenuContentProps<T extends ValidComponent = "ul"> =
   NavigationMenuPrimitive.NavigationMenuContentProps<T> & {
     class?: string | undefined;
+    children?: JSX.Element;
   };
 
 const NavigationMenuContent = <T extends ValidComponent = "ul">(
@@ -107,27 +135,22 @@ const NavigationMenuContent = <T extends ValidComponent = "ul">(
 ) => {
   const [local, others] = splitProps(props as NavigationMenuContentProps, [
     "class",
+    "children",
   ]);
   return (
     <NavigationMenuPrimitive.Portal>
       <NavigationMenuPrimitive.Content
         class={cn(
-          // base settings
-          "pointer-events-none absolute left-0 top-0 box-border p-4 focus:outline-none data-[expanded]:pointer-events-auto",
-          // base animation settings
+          "pointer-events-none absolute left-0 top-0 focus:outline-none data-[expanded]:pointer-events-auto w-screen z-30 overflow-hidden",
           "data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out",
-          // left to right
-          "data-[orientation=horizontal]:data-[motion=from-start]:slide-in-from-left-52 data-[orientation=horizontal]:data-[motion=to-end]:slide-out-to-right-52",
-          // right to left
-          "data-[orientation=horizontal]:data-[motion=from-end]:slide-in-from-right-52 data-[orientation=horizontal]:data-[motion=to-start]:slide-out-to-left-52",
-          // top to bottom
-          "data-[orientation=vertical]:data-[motion=from-start]:slide-in-from-top-52 data-[orientation=vertical]:data-[motion=to-end]:slide-out-to-bottom-52",
-          //bottom to top
-          "data-[orientation=vertical]:data-[motion=from-end]:slide-in-from-bottom-52 data-[orientation=vertical]:data-[motion=to-start]:slide-out-to-bottom-52",
+          "data-[orientation=horizontal]:data-[motion=from-start]:slide-in-from-top-52 data-[orientation=horizontal]:data-[motion=to-end]:slide-out-to-bottom-52",
+          "data-[orientation=horizontal]:data-[motion=from-end]:slide-in-from-top-52 data-[orientation=horizontal]:data-[motion=to-start]:slide-out-to-bottom-52",
           local.class
         )}
         {...others}
-      />
+      >
+        <div class="max-w-screen-xl px-2 py-4 mx-auto">{local.children}</div>
+      </NavigationMenuPrimitive.Content>
     </NavigationMenuPrimitive.Portal>
   );
 };

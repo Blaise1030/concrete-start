@@ -8,7 +8,7 @@ import { cn } from "~/lib/utils";
 import { api } from "~/lib/api";
 import { z } from "zod";
 import { A, useLocation } from "@solidjs/router";
-import { Card } from "../ui/card";
+import { BackgroundPattern } from "../common/background-pattern";
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -31,10 +31,13 @@ export default function Home() {
 
   return (
     <div class="w-screen h-screen flex flex-row relative overflow-hidden isolate">
-      <header class="fixed top-0 left-0 p-6 px-4 md:px-6 py-4 w-full">
-        <h1 class="text-xl tracking-tighter font-semibold w-full text-center">
-          <A href="/">⌘</A>
-        </h1>
+      <BackgroundPattern />
+      <header class="fixed top-0 left-0 p-6 px-4 md:px-6 py-2 w-full">
+        <div class="w-full flex justify-center items-center min-h-9">
+          <A href="/" class="font-bold text-lg">
+            ⌘
+          </A>
+        </div>
       </header>
       <div class="mx-auto max-w-sm w-full justify-center flex flex-col p-2">
         <div class="flex flex-col space-y-4 p-4">
