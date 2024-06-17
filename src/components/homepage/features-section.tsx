@@ -17,7 +17,7 @@ import {
 
 export default function FeaturesSection(props: { title: string }) {
   return (
-    <Carousel class="w-full flex flex-col space-y-4">
+    <Carousel class="w-full flex flex-col space-y-4 py-12">
       <div class="flex justify-between items-center max-w-7xl mx-auto w-full px-6 py-2">
         <p class="md:text-2xl text-xl font-semibold">{props.title}</p>
         <div class="md:flex flex-row space-x-2 hidden">

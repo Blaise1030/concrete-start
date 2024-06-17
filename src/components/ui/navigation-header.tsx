@@ -128,6 +128,7 @@ type NavigationMenuContentProps<T extends ValidComponent = "ul"> =
   NavigationMenuPrimitive.NavigationMenuContentProps<T> & {
     class?: string | undefined;
     children?: JSX.Element;
+    contentClass?: string;
   };
 
 const NavigationMenuContent = <T extends ValidComponent = "ul">(
@@ -136,6 +137,7 @@ const NavigationMenuContent = <T extends ValidComponent = "ul">(
   const [local, others] = splitProps(props as NavigationMenuContentProps, [
     "class",
     "children",
+    "contentClass",
   ]);
   return (
     <NavigationMenuPrimitive.Portal>
@@ -149,7 +151,11 @@ const NavigationMenuContent = <T extends ValidComponent = "ul">(
         )}
         {...others}
       >
-        <div class="max-w-screen-xl px-2 py-4 mx-auto">{local.children}</div>
+        <div
+          class={cn("max-w-screen-xl px-2 py-4 mx-auto", local.contentClass)}
+        >
+          {local.children}
+        </div>
       </NavigationMenuPrimitive.Content>
     </NavigationMenuPrimitive.Portal>
   );

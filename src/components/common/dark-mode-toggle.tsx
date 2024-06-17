@@ -18,8 +18,8 @@ export function DarkModeToggle() {
       <DropdownMenuTrigger
         as={Button<"button">}
         variant="ghost"
-        size="sm"
-        class="w-9 px-0 items-center"
+        size="icon"
+        class="px-0 items-center"
       >
         <Icon icon={"lucide:sun"} class="transition-all dark:block hidden" />
         <Icon icon={"lucide:moon"} class="transition-all dark:hidden block" />

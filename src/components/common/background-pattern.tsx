@@ -1,7 +1,7 @@
 export function BackgroundPattern() {
   return (
     <svg
-      class="absolute inset-0 -z-10 h-full w-full stroke-border/80 [mask-image:radial-gradient(circle_at_center,white,transparent)]"
+      class="absolute inset-0 -z-10 h-full w-full stroke-border/80 [mask-image:radial-gradient(ellipse,white,transparent)]"
       aria-hidden="true"
     >
       <defs>

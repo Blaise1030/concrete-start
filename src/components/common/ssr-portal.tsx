@@ -12,10 +12,7 @@ export function SSRPortal(props: { children: JSX.Element }) {
 
   // Render a placeholder div on the server and a Portal on the client
   return (
-    <Show
-      when={isMounted()}
-      fallback={<div id="portal-placeholder">{props.children}</div>}
-    >
+    <Show when={isMounted()} fallback={props.children}>
       <Portal mount={document.body}>{props.children}</Portal>
     </Show>
   );
