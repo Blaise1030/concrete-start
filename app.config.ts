@@ -1,5 +1,7 @@
 import { defineConfig } from "@solidjs/start/config";
 
 export default defineConfig({
-    middleware: 'src/middleware'
+  vite: {
+    ssr: { external: ["drizzle-orm"] },
+  },
 });

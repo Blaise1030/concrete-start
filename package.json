@@ -1,54 +1,36 @@
 {
-  "name": "example-with-auth",
+  "name": "example-with-drizzle",
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
     "build": "vinxi build",
-    "start": "vinxi start",
-    "generate": "npx drizzle-kit generate",
-    "migrate": "npx drizzle-kit migrate",
-    "push": "npx drizzle-kit push"
+    "start": "vinxi start"
   },
   "devDependencies": {
-    "@iconify-icon/solid": "^2.1.1",
     "@types/better-sqlite3": "^7.6.10",
-    "@types/node": "^20.12.7",
-    "drizzle-kit": "^0.21.2"
+    "@types/node": "^20.12.12",
+    "autoprefixer": "^10.4.19",
+    "drizzle-kit": "^0.21.4",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4"
   },
   "dependencies": {
-    "@corvu/drawer": "^0.2.1",
+    "@fontsource/inter": "^5.0.18",
+    "@hono/zod-validator": "^0.2.2",
     "@kobalte/core": "^0.13.3",
-    "@lucia-auth/adapter-drizzle": "^1.0.7",
-    "@modular-forms/solid": "^0.21.0",
-    "@solid-primitives/refs": "^1.0.8",
-    "@solidjs/router": "^0.13.3",
-    "@solidjs/start": "^1.0.1",
-    "@trpc/client": "^10.45.2",
-    "@trpc/server": "^10.45.2",
-    "arctic": "^1.9.1",
-    "autoprefixer": "^10.4.19",
-    "better-sqlite3": "^9.6.0",
-    "chart.js": "^4.4.3",
+    "@solidjs/router": "^0.13.6",
+    "@solidjs/start": "^1.0.0",
+    "better-sqlite3": "^10.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "crypto": "^1.0.1",
-    "drizzle-orm": "^0.29.5",
-    "embla-carousel-solid": "^8.1.5",
-    "lucia": "^3.2.0",
-    "lucide-solid": "^0.390.0",
-    "mini-svg-data-uri": "^1.4.4",
-    "oslo": "^1.2.0",
-    "postcss": "^8.4.38",
-    "solid-icons": "^1.1.0",
+    "drizzle-orm": "^0.30.10",
+    "hono": "^4.4.7",
     "solid-js": "^1.8.17",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss": "^3.4.4",
     "tailwindcss-animate": "^1.0.7",
-    "unstorage": "1.10.2",
-    "vinxi": "^0.3.11",
-    "zod": "^3.23.8"
+    "vinxi": "0.3.12"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }
