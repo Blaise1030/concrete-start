@@ -1,11 +1,20 @@
+import {cache, createAsync} from "@solidjs/router";
 import {onMount} from "solid-js";
 import {client} from "~/utils/api";
 
-export default function Home() {
-  onMount(async () => {
-    const res = await client.api.hello.$get();
-    const data = await res.json();
-  });
+const getUsers = cache(async () => {
+  const response = await client.api.hello.$get();
+  return await response.json();
+}, "users");
 
-  return <main class="w-full space-y-2">What is this ? </main>;
+export const route = {
+  load: () => getUsers(),
+};
+
+export default function Home() {
+  const users = createAsync(() => getUsers());
+
+  return (
+    <main class="w-full space-y-2">{JSON.stringify(users()?.message)}</main>
+  );
 }
