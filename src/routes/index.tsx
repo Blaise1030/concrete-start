@@ -12,9 +12,9 @@ export const route = {
 };
 
 export default function Home() {
-  const users = createAsync(() => getUsers());
+  const user = createAsync(() => getUsers());
 
   return (
-    <main class="w-full space-y-2">{JSON.stringify(users()?.message)}</main>
+    <main class="w-full space-y-2">{JSON.stringify(user()?.message)}</main>
   );
 }
