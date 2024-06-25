@@ -1,11 +1,10 @@
 import {Hono} from "hono";
 import type {APIEvent} from "@solidjs/start/server";
+import {auth} from "~/backend/modules/auth";
 
 const app = new Hono().basePath("/api");
+const route = app.route("/auth", auth);
 
-const route = app.get("/hello", (c) => {
-  return c.json({message: `Hi Blaise`});
-});
 export async function GET(item: APIEvent) {
   return route.fetch(item.request);
 }
