@@ -26,9 +26,8 @@ export const auth = new Hono<THonoType>()
     const sessionId = c?.var?.session?.id
     if (sessionId) {
       await lucia.invalidateSession(sessionId);
-      return c.json({ message: 'Success' })
+      return c.redirect('/login')
     }
-
   })
   .post('/signup',
     zValidator('json',

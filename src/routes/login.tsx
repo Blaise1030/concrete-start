@@ -1,5 +1,13 @@
 import {type RouteSectionProps} from "@solidjs/router";
 import {Show, createSignal} from "solid-js";
+import {Link} from "~/components/link";
+import {Button, buttonVariants} from "~/components/ui/button";
+import {Separator} from "~/components/ui/separator";
+import {
+  TextFieldInput,
+  TextField,
+  TextFieldLabel,
+} from "~/components/ui/text-field";
 import {client} from "~/utils/api";
 
 export default function Login(props: RouteSectionProps) {
@@ -9,16 +17,31 @@ export default function Login(props: RouteSectionProps) {
   const [hello, setHello] = createSignal();
   return (
     <main>
-      <div class="bg-red-500">
-        <button
-          onClick={async () => {
-            const res = await client.api.auth.me.$get();
-            const json = await res.json();
-            setHello(json as any);
-          }}
+      <div class="p-4 flex flex-col space-y-2 max-w-sm mx-auto">
+        <TextField>
+          <TextFieldLabel for="email">Email</TextFieldLabel>
+          <TextFieldInput type="email" id="email" placeholder="acme@mail.com" />
+        </TextField>
+        <TextField>
+          <TextFieldLabel for="email">Password</TextFieldLabel>
+          <TextFieldInput type="email" id="password" placeholder="P@ssw0rd" />
+        </TextField>
+        <Button>Submit</Button>
+        <div class="w-full flex py-3 relative">
+          <p class="absolute bg-background left-[50%] text-sm text-muted-foreground -translate-x-[50%] -translate-y-[50%] px-2">
+            OR
+          </p>
+          <Separator />
+        </div>
+        <Link
+          href="/api/auth/google/oauth"
+          class={buttonVariants({variant: "outline"})}
         >
-          Click
-        </button>
+          Continue with Google
+        </Link>
+      </div>
+
+      <div class="bg-red-500">
         <input
           type="checkbox"
           onChange={(e) => setIsSignUp(e.target.checked)}
@@ -60,19 +83,11 @@ export default function Login(props: RouteSectionProps) {
           <button>{isSignUp() ? "Sign Up" : "Submit"}</button>
         </form>
       </div>
-      <button
-        onClick={() => (document.location.href = "/api/auth/google/oauth")}
-      >
+      <Link href="/api/auth/google/oauth" class="bg-red-50">
         Google
-      </button>
+      </Link>
       <Show when={hello()}>
-        <button
-          onClick={async () => {
-            const res = await client.api.auth.logout.$get();
-          }}
-        >
-          Logout
-        </button>
+        <Link href="/api/auth/logout">Logout</Link>
       </Show>
     </main>
   );
