@@ -10,11 +10,26 @@ import { lucia } from '../../lucia';
 import { setCookie } from 'hono/cookie'
 import { eq } from 'drizzle-orm';
 import { googleOAuth } from './oauth/google';
+import { authMiddleware } from './auth-middleware';
+import { THonoType } from '~/routes/api/[...route]';
 
 
 const hash_params = { memoryCost: 19456, timeCost: 2, outputLen: 32, parallelism: 1 }
 
-export const auth = new Hono()
+export const auth = new Hono<THonoType>()
+  .use('/me', authMiddleware)
+  .get('/me', (c) => {
+    return c.json(c?.var?.user)
+  })
+  .use('/logout', authMiddleware)
+  .get('/logout', async (c) => {
+    const sessionId = c?.var?.session?.id
+    if (sessionId) {
+      await lucia.invalidateSession(sessionId);
+      return c.json({ message: 'Success' })
+    }
+
+  })
   .post('/signup',
     zValidator('json',
       z.object({
@@ -59,4 +74,5 @@ export const auth = new Hono()
         }
       }
     }
-  ).route('/google', googleOAuth)
+  )
+  .route('/google', googleOAuth)

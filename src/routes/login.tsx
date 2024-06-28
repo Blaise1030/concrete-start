@@ -1,14 +1,24 @@
 import {type RouteSectionProps} from "@solidjs/router";
-import {createSignal} from "solid-js";
+import {Show, createSignal} from "solid-js";
 import {client} from "~/utils/api";
 
 export default function Login(props: RouteSectionProps) {
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
   const [isSignUp, setIsSignUp] = createSignal(false);
+  const [hello, setHello] = createSignal();
   return (
     <main>
       <div class="bg-red-500">
+        <button
+          onClick={async () => {
+            const res = await client.api.auth.me.$get();
+            const json = await res.json();
+            setHello(json as any);
+          }}
+        >
+          Click
+        </button>
         <input
           type="checkbox"
           onChange={(e) => setIsSignUp(e.target.checked)}
@@ -55,6 +65,15 @@ export default function Login(props: RouteSectionProps) {
       >
         Google
       </button>
+      <Show when={hello()}>
+        <button
+          onClick={async () => {
+            const res = await client.api.auth.logout.$get();
+          }}
+        >
+          Logout
+        </button>
+      </Show>
     </main>
   );
 }
