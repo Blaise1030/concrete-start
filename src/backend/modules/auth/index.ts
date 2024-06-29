@@ -30,9 +30,9 @@ export const auth = new Hono<THonoType>()
       return c.redirect('/login')
     }
   })
-  .post('/signup', zValidator('json', LoginSchema.merge(z.object({ redirect: z.string().nullable() }))),
+  .post('/signup', zValidator('json', LoginSchema),
     async (c) => {
-      const { email, password, redirect } = c.req.valid('json')
+      const { email, password } = c.req.valid('json')
       const passwordHash = await hash(password, hash_params);
       const userId = generateIdFromEntropySize(10);
       try {
@@ -40,15 +40,15 @@ export const auth = new Hono<THonoType>()
         const session = await lucia.createSession(userId, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
         setCookie(c, sessionCookie.name, sessionCookie.value)
-        return c.redirect(redirect ?? "/")
+        return c.json({ message: 'success' })
       } catch (e) {
         throw new HTTPException(400, { message: 'Something went wrong.' })
       }
     }
   ).post('/login',
-    zValidator('json', LoginSchema.merge(z.object({ redirect: z.string().nullable() }))),
+    zValidator('json', LoginSchema),
     async (c) => {
-      const { email, password, redirect } = c.req.valid('json')
+      const { email, password } = c.req.valid('json')
       const user = await db.select().from(userTable).where(eq(userTable.email, email))
       if (user.length === 0) throw new HTTPException(400, { message: 'Invalid email or password' })
       else {
@@ -58,7 +58,7 @@ export const auth = new Hono<THonoType>()
           const session = await lucia.createSession(user[0].id, {});
           const sessionCookie = lucia.createSessionCookie(session.id);
           setCookie(c, sessionCookie.name, sessionCookie.value)
-          return c.redirect(redirect ?? "/")
+          return c.json({ message: 'success' })
         }
       }
     }

@@ -1,9 +1,5 @@
-import {
-  useParams,
-  useSearchParams,
-  type RouteSectionProps,
-} from "@solidjs/router";
-import { Show, Switch, createSignal } from "solid-js";
+import { useNavigate, type RouteSectionProps } from "@solidjs/router";
+import { Show, createSignal } from "solid-js";
 import { Link } from "~/components/link";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
@@ -19,7 +15,7 @@ import { LoginSchema, TLoginSchema } from "~/zod-schema/LoginSchema";
 import { client } from "~/utils/api";
 
 export default function Login(props: RouteSectionProps) {
-  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const [isSignUp, setIsSignUp] = createSignal(false);
   const [form, { Form, Field }] = createForm<TLoginSchema>({
@@ -41,12 +37,11 @@ export default function Login(props: RouteSectionProps) {
           onSubmit={async (a) => {
             const searchParams = props.location?.search;
             const redirect = new URLSearchParams(searchParams).get("path");
+            let res = null;
             if (isSignUp())
-              await client.api.auth.signup.$post({
-                json: { ...a, redirect },
-              });
-            else
-              await client.api.auth.login.$post({ json: { ...a, redirect } });
+              res = await client.api.auth.signup.$post({ json: a });
+            else res = await client.api.auth.login.$post({ json: a });
+            if (res.status === 200) navigate(redirect ?? "/");
           }}
         >
           <Field name="email">
