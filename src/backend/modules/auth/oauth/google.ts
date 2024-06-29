@@ -65,7 +65,7 @@ export const googleOAuth = new Hono()
         const session = await lucia.createSession(userId, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
         setCookie(c, sessionCookie.name, sessionCookie.value)
-        return c.json({ message: 'Success' })
+        return c.redirect('/dashboard')
       }
     } catch (e) {
       console.log(e)
