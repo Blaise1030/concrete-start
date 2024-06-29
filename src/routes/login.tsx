@@ -1,22 +1,28 @@
-import {type RouteSectionProps} from "@solidjs/router";
-import {Show, Switch, createSignal} from "solid-js";
-import {Link} from "~/components/link";
-import {Button, buttonVariants} from "~/components/ui/button";
-import {Separator} from "~/components/ui/separator";
-import {Icon} from "@iconify-icon/solid";
+import {
+  useParams,
+  useSearchParams,
+  type RouteSectionProps,
+} from "@solidjs/router";
+import { Show, Switch, createSignal } from "solid-js";
+import { Link } from "~/components/link";
+import { Button, buttonVariants } from "~/components/ui/button";
+import { Separator } from "~/components/ui/separator";
+import { Icon } from "@iconify-icon/solid";
 import {
   TextFieldInput,
   TextField,
   TextFieldLabel,
   TextFieldDescription,
 } from "~/components/ui/text-field";
-import {createForm, zodForm} from "@modular-forms/solid";
-import {LoginSchema, TLoginSchema} from "~/zod-schema/LoginSchema";
-import {client} from "~/utils/api";
+import { createForm, zodForm } from "@modular-forms/solid";
+import { LoginSchema, TLoginSchema } from "~/zod-schema/LoginSchema";
+import { client } from "~/utils/api";
 
 export default function Login(props: RouteSectionProps) {
+  const [searchParams] = useSearchParams();
+
   const [isSignUp, setIsSignUp] = createSignal(false);
-  const [form, {Form, Field}] = createForm<TLoginSchema>({
+  const [form, { Form, Field }] = createForm<TLoginSchema>({
     validate: zodForm(LoginSchema),
   });
 
@@ -33,8 +39,14 @@ export default function Login(props: RouteSectionProps) {
         <Form
           class="flex flex-col space-y-4"
           onSubmit={async (a) => {
-            if (isSignUp()) await client.api.auth.signup.$post({json: a});
-            else await client.api.auth.login.$post({json: a});
+            const searchParams = props.location?.search;
+            const redirect = new URLSearchParams(searchParams).get("path");
+            if (isSignUp())
+              await client.api.auth.signup.$post({
+                json: { ...a, redirect },
+              });
+            else
+              await client.api.auth.login.$post({ json: { ...a, redirect } });
           }}
         >
           <Field name="email">
@@ -102,7 +114,7 @@ export default function Login(props: RouteSectionProps) {
         </div>
         <Link
           href="/api/auth/google/oauth"
-          class={buttonVariants({variant: "outline"})}
+          class={buttonVariants({ variant: "outline" })}
         >
           <Icon icon={"bi:google"} class="mr-2" />
           Continue with Google
