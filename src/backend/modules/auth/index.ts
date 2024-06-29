@@ -3,15 +3,15 @@ import { HTTPException } from 'hono/http-exception'
 import { hash, verify } from "@node-rs/argon2";
 import { Hono } from "hono";
 import { generateIdFromEntropySize } from 'lucia';
-import { db } from '../../db';
 import { userTable } from '~/drizzle/schema';
-import { lucia } from '../../lucia';
 import { setCookie } from 'hono/cookie'
 import { eq } from 'drizzle-orm';
-import { googleOAuth } from './oauth/google';
-import { authMiddleware } from '../../middleware/auth';
-import { THonoType } from '~/routes/api/[...route]';
+import { googleOAuth } from '~/backend/modules/auth/oauth/google';
+import { authMiddleware } from '~/backend/middleware/auth';
 import { LoginSchema } from '~/schema/LoginSchema';
+import { THonoType } from '~/backend';
+import { lucia } from '~/backend/lucia';
+import { db } from '~/backend/db';
 
 
 const hash_params = { memoryCost: 19456, timeCost: 2, outputLen: 32, parallelism: 1 }

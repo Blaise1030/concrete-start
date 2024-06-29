@@ -54,7 +54,7 @@ export const googleOAuth = new Hono()
         const session = await lucia.createSession(res[0]?.userId as string, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
         setCookie(c, sessionCookie.name, sessionCookie.value)
-        return c.json({ message: 'Success' })
+        return c.redirect('/dashboard')
       } else {
         const oAuthId = generateIdFromEntropySize(10); // 16 characters long
         const userId = generateIdFromEntropySize(10); // 16 characters long
