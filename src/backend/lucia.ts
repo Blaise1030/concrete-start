@@ -4,8 +4,8 @@ import { Lucia } from "lucia";
 import { db } from "./db";
 import { Google } from "arctic";
 
-import { webcrypto } from "node:crypto";
-globalThis.crypto = webcrypto as Crypto;
+// import { webcrypto } from "node:crypto";
+// globalThis.crypto = webcrypto as Crypto;
 
 const databaseAdapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 

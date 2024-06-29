@@ -1,5 +1,5 @@
-import { Link } from "~/components/link";
-import { client } from "~/utils/api";
+import {Link} from "~/components/link";
+import {client} from "~/lib/api";
 
 export default function Dashboard() {
   return (

@@ -1,24 +1,24 @@
-import { useNavigate, type RouteSectionProps } from "@solidjs/router";
-import { Show, createSignal } from "solid-js";
-import { Link } from "~/components/link";
-import { Button, buttonVariants } from "~/components/ui/button";
-import { Separator } from "~/components/ui/separator";
-import { Icon } from "@iconify-icon/solid";
+import {useNavigate, type RouteSectionProps} from "@solidjs/router";
+import {Show, createSignal} from "solid-js";
+import {Link} from "~/components/link";
+import {Button, buttonVariants} from "~/components/ui/button";
+import {Separator} from "~/components/ui/separator";
+import {Icon} from "@iconify-icon/solid";
 import {
   TextFieldInput,
   TextField,
   TextFieldLabel,
   TextFieldDescription,
 } from "~/components/ui/text-field";
-import { createForm, zodForm } from "@modular-forms/solid";
-import { LoginSchema, TLoginSchema } from "~/zod-schema/LoginSchema";
-import { client } from "~/utils/api";
+import {createForm, zodForm} from "@modular-forms/solid";
+import {LoginSchema, TLoginSchema} from "~/schema/LoginSchema";
+import {client} from "~/lib/api";
 
 export default function Login(props: RouteSectionProps) {
   const navigate = useNavigate();
 
   const [isSignUp, setIsSignUp] = createSignal(false);
-  const [form, { Form, Field }] = createForm<TLoginSchema>({
+  const [form, {Form, Field}] = createForm<TLoginSchema>({
     validate: zodForm(LoginSchema),
   });
 
@@ -38,9 +38,8 @@ export default function Login(props: RouteSectionProps) {
             const searchParams = props.location?.search;
             const redirect = new URLSearchParams(searchParams).get("path");
             let res = null;
-            if (isSignUp())
-              res = await client.api.auth.signup.$post({ json: a });
-            else res = await client.api.auth.login.$post({ json: a });
+            if (isSignUp()) res = await client.api.auth.signup.$post({json: a});
+            else res = await client.api.auth.login.$post({json: a});
             if (res.status === 200) navigate(redirect ?? "/");
           }}
         >
@@ -109,7 +108,7 @@ export default function Login(props: RouteSectionProps) {
         </div>
         <Link
           href="/api/auth/google/oauth"
-          class={buttonVariants({ variant: "outline" })}
+          class={buttonVariants({variant: "outline"})}
         >
           <Icon icon={"bi:google"} class="mr-2" />
           Continue with Google
