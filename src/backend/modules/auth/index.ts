@@ -12,6 +12,7 @@ import { eq } from 'drizzle-orm';
 import { googleOAuth } from './oauth/google';
 import { authMiddleware } from './auth-middleware';
 import { THonoType } from '~/routes/api/[...route]';
+import { LoginSchema } from '~/zod-schema/LoginSchema';
 
 
 const hash_params = { memoryCost: 19456, timeCost: 2, outputLen: 32, parallelism: 1 }
@@ -29,13 +30,7 @@ export const auth = new Hono<THonoType>()
       return c.redirect('/login')
     }
   })
-  .post('/signup',
-    zValidator('json',
-      z.object({
-        email: z.string().email('Needs to be a valid email'),
-        password: z.string().min(1, 'Password has to be 6 characters long')
-      })
-    ),
+  .post('/signup', zValidator('json', LoginSchema),
     async (c) => {
       const { email, password } = c.req.valid('json')
       const passwordHash = await hash(password, hash_params);
@@ -52,12 +47,7 @@ export const auth = new Hono<THonoType>()
       }
     }
   ).post('/login',
-    zValidator('json',
-      z.object({
-        email: z.string().email('Needs to be a valid email'),
-        password: z.string().min(1, 'Password has to be 6 characters long')
-      })
-    ),
+    zValidator('json', LoginSchema),
     async (c) => {
       const { email, password } = c.req.valid('json')
       const user = await db.select().from(userTable).where(eq(userTable.email, email))

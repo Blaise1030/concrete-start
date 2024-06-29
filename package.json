@@ -7,6 +7,7 @@
     "start": "vinxi start"
   },
   "devDependencies": {
+    "@iconify-icon/solid": "^2.1.1",
     "@types/better-sqlite3": "^7.6.10",
     "@types/node": "^20.12.12",
     "autoprefixer": "^10.4.19",
@@ -20,6 +21,7 @@
     "@kobalte/core": "^0.13.3",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@lucia-auth/adapter-sqlite": "^3.0.1",
+    "@modular-forms/solid": "^0.22.1",
     "@solidjs/router": "^0.13.6",
     "@solidjs/start": "^1.0.0",
     "arctic": "^1.9.1",
@@ -30,7 +32,6 @@
     "hono": "^4.4.7",
     "lucia": "^3.2.0",
     "oslo": "^1.2.0",
-    "solid-icons": "^1.1.0",
     "solid-js": "^1.8.17",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
