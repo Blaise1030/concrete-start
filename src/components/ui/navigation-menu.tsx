@@ -4,7 +4,6 @@ import {PolymorphicProps} from "@kobalte/core";
 import * as NavigationMenuPrimitive from "@kobalte/core/navigation-menu";
 
 import {cn} from "~/lib/utils";
-import {SSRPortal} from "../common/ssr-portal";
 
 type NavigationMenuItemProps<T extends ValidComponent = "ul"> =
   NavigationMenuPrimitive.NavigationMenuItemProps<T> & {
@@ -30,28 +29,26 @@ const NavigationMenu = <T extends ValidComponent = "ul">(
     "children",
   ]);
   return (
-    <SSRPortal>
-      <NavigationMenuPrimitive.Root
-        onValueChange={(v) => {
-          if (Boolean(v))
-            document
-              .getElementById("app")
-              ?.setAttribute("class", "scale-[95%] duration-200 delay-200");
-          else
-            document
-              .getElementById("app")
-              ?.setAttribute("class", "scale-[100%] duration-200");
-        }}
-        class={cn(
-          "group/menu flex w-max flex-1 list-none items-center justify-center data-[orientation=vertical]:flex-col [&>li]:w-full z-20 space-x-2",
-          local.class
-        )}
-        {...others}
-      >
-        {local.children}
-        <NavigationMenuViewport />
-      </NavigationMenuPrimitive.Root>
-    </SSRPortal>
+    <NavigationMenuPrimitive.Root
+      onValueChange={(v) => {
+        if (Boolean(v))
+          document
+            .getElementById("app")
+            ?.setAttribute("class", "scale-[95%] duration-200 delay-200");
+        else
+          document
+            .getElementById("app")
+            ?.setAttribute("class", "scale-[100%] duration-200");
+      }}
+      class={cn(
+        "group/menu flex w-max flex-1 list-none items-center justify-center data-[orientation=vertical]:flex-col [&>li]:w-full z-20 space-x-2",
+        local.class
+      )}
+      {...others}
+    >
+      {local.children}
+      <NavigationMenuViewport />
+    </NavigationMenuPrimitive.Root>
   );
 };
 
