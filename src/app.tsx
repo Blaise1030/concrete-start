@@ -5,10 +5,36 @@ import {Suspense} from "solid-js";
 
 import "@fontsource/inter";
 import "./app.css";
+import {getCookie} from "vinxi/http";
+import {
+  cookieStorageManagerSSR,
+  ColorModeScript,
+  ColorModeProvider,
+} from "@kobalte/core";
+import {isServer} from "solid-js/web";
+
+function getServerCookies() {
+  "use server";
+  const colorMode = getCookie("kb-color-mode");
+  return colorMode ? `kb-color-mode=${colorMode}` : "";
+}
 
 export default function App() {
+  const storageManager = cookieStorageManagerSSR(
+    isServer ? getServerCookies() : document.cookie
+  );
+
   return (
-    <Router root={(props) => <Suspense>{props.children}</Suspense>}>
+    <Router
+      root={(props) => (
+        <>
+          <ColorModeScript storageType={storageManager.type} />
+          <ColorModeProvider storageManager={storageManager}>
+            <Suspense>{props.children}</Suspense>
+          </ColorModeProvider>
+        </>
+      )}
+    >
       <FileRoutes />
     </Router>
   );

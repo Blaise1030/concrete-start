@@ -27,6 +27,7 @@ import {cn} from "~/lib/utils";
 import {SSRPortal} from "~/components/common/ssr-portal";
 import {For, Show} from "solid-js";
 import {Icon} from "@iconify-icon/solid";
+import {ModeToggle} from "~/components/common/mode-toggle";
 
 const items = [
   {
@@ -85,42 +86,48 @@ export default function Home() {
   return (
     <>
       <SSRPortal>
-        <NavigationMenu class="fixed top-0 left-0 w-full bg-background border-b">
-          <div class="flex w-full max-w-screen-xl items-center py-2 sm:py-1 px-4">
+        <div class="fixed top-0 left-0 w-full bg-background z-10 flex">
+          <div class="max-w-screen-xl mx-auto flex w-full px-4 py-2">
             <Link
               href="/"
               class="font-bold text-lg tracking-tighter mr-4 leading-9"
             >
-              ⌘ Acme.
+              ⌘
             </Link>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>
-                Features
-                <NavigationMenuIcon />
-              </NavigationMenuTrigger>
-              <NavigationMenuContent class="max-h-[calc(100vh-52px)] overflow-auto">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <For each={items}>
-                    {(item) => (
-                      <NavigationMenuLink
-                        href={item?.href}
-                        class="col-span-1"
-                        target="_blank"
-                      >
-                        <NavigationMenuLabel>
-                          <Icon icon={"ion:link"} class="leading-[16px] mr-2" />
-                          {item?.title}
-                        </NavigationMenuLabel>
-                        <NavigationMenuDescription>
-                          {item?.description}
-                        </NavigationMenuDescription>
-                      </NavigationMenuLink>
-                    )}
-                  </For>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <div class="ml-auto">
+            <NavigationMenu>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>
+                  Features
+                  <NavigationMenuIcon />
+                </NavigationMenuTrigger>
+                <NavigationMenuContent class="max-h-[calc(100vh-52px)] overflow-auto">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <For each={items}>
+                      {(item) => (
+                        <NavigationMenuLink
+                          href={item?.href}
+                          class="col-span-1"
+                          target="_blank"
+                        >
+                          <NavigationMenuLabel>
+                            <Icon
+                              icon={"ion:link"}
+                              class="leading-[16px] mr-2"
+                            />
+                            {item?.title}
+                          </NavigationMenuLabel>
+                          <NavigationMenuDescription>
+                            {item?.description}
+                          </NavigationMenuDescription>
+                        </NavigationMenuLink>
+                      )}
+                    </For>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenu>
+            <div class="ml-auto flex gap-2 items-center">
+              <ModeToggle />
               <Link
                 href="/dashboard"
                 class={cn(
@@ -132,14 +139,12 @@ export default function Home() {
               </Link>
             </div>
           </div>
-        </NavigationMenu>
+        </div>
       </SSRPortal>
-
-      <main class="w-full space-y-2 h-screen flex flex-col justify-center">
-        <FeatureSections />
+      <main class="w-full space-y-2 flex flex-col justify-center relative pt-11 min-h-screen">
         <section class="max-w-screen-xl mx-auto slide-in-from-bottom-10 animate-in duration-500 fade-in py-24 px-8">
           <div class="flex flex-col gap-4 items-center transition-none justify-center">
-            <h1 class="text-balance tracking-tighter bg-gradient-to-tr from-primary/70 via-primary to-primary/60 bg-clip-text font-bold text-transparent dark:from-muted-foreground/10 dark:muted-foreground dark:muted-foreground/20 text-3xl md:text-5xl">
+            <h1 class="text-balance tracking-tighter bg-gradient-to-tr from-primary/70 via-primary to-primary/60 bg-clip-text font-bold text-transparent text-3xl md:text-5xl">
               This is a concrete start
             </h1>
             <p class="text-muted-foreground text-md md:text-lg lg:text-xl max-w-2xl text-center">
@@ -155,18 +160,39 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <FeatureSections reverse />
+        <FeatureSection />
       </main>
+      <FooterSection />
     </>
   );
 }
 
-function FeatureSections({reverse}: {reverse?: boolean}) {
+function FooterSection() {
   return (
-    <section class="w-full skew-y-[-8deg]">
+    <footer class="w-full border-t">
+      <div class="max-w-screen-xl mx-auto p-4 text-xs text-muted-foreground">
+        Built with care by
+        <Link
+          href="https://blaise.deno.dev/"
+          target="_blank"
+          class={cn(
+            buttonVariants({variant: "link"}),
+            "h-fit p-0 text-xs ml-1"
+          )}
+        >
+          Blaise
+        </Link>
+      </div>
+    </footer>
+  );
+}
+
+function FeatureSection() {
+  return (
+    <section class="w-full">
       <Carousel opts={{loop: true}} plugins={[Autoplay({delay: 2000})]}>
         <CarouselContent class="sm:px-0">
-          <For each={reverse ? items : items.toReversed()}>
+          <For each={items}>
             {(item) => (
               <CarouselItem class="p-0 px-2 py-4 md:max-w-lg max-w-[250px]">
                 <Card class="hover:shadow-lg duration-500 select-none aspect-[3/4] sm:aspect-video">
