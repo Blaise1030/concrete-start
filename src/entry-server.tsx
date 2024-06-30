@@ -1,9 +1,9 @@
 // @refresh reload
-import { StartServer, createHandler } from "@solidjs/start/server";
+import {StartServer, createHandler} from "@solidjs/start/server";
 
 export default createHandler(() => (
   <StartServer
-    document={({ assets, children, scripts }) => (
+    document={({assets, children, scripts}) => (
       <html lang="en">
         <head>
           <meta charset="utf-8" />
@@ -11,7 +11,7 @@ export default createHandler(() => (
           <link rel="icon" href="/favicon.ico" />
           {assets}
         </head>
-        <body>
+        <body class="">
           <div id="app">{children}</div>
           {scripts}
         </body>

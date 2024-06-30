@@ -29,6 +29,8 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.30.10",
+    "embla-carousel-autoplay": "^8.1.5",
+    "embla-carousel-solid": "^8.1.5",
     "hono": "^4.4.7",
     "lucia": "^3.2.0",
     "oslo": "^1.2.0",
