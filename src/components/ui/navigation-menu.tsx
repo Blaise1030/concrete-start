@@ -1,4 +1,4 @@
-import {createSignal, JSX, splitProps, ValidComponent} from "solid-js";
+import {JSX, splitProps, ValidComponent} from "solid-js";
 
 import {PolymorphicProps} from "@kobalte/core";
 import * as NavigationMenuPrimitive from "@kobalte/core/navigation-menu";
@@ -19,6 +19,7 @@ type NavigationMenuProps<T extends ValidComponent = "ul"> =
   NavigationMenuPrimitive.NavigationMenuRootProps<T> & {
     class?: string | undefined;
     children?: JSX.Element;
+    onOpen?: (v: boolean) => void;
   };
 
 const NavigationMenu = <T extends ValidComponent = "ul">(
@@ -31,14 +32,15 @@ const NavigationMenu = <T extends ValidComponent = "ul">(
   return (
     <NavigationMenuPrimitive.Root
       onValueChange={(v) => {
-        if (Boolean(v))
+        if (Boolean(v)) {
           document
             .getElementById("app")
             ?.setAttribute("class", "scale-[95%] duration-200 delay-200");
-        else
+        } else
           document
             .getElementById("app")
             ?.setAttribute("class", "scale-[100%] duration-200");
+        if (props?.onOpen) props.onOpen(Boolean(v));
       }}
       class={cn(
         "group/menu flex w-max flex-1 list-none items-center justify-center data-[orientation=vertical]:flex-col [&>li]:w-full z-20 space-x-2",
@@ -114,7 +116,7 @@ const NavigationMenuViewport = <T extends ValidComponent = "li">(
       <NavigationMenuPrimitive.Viewport
         {...others}
         class={cn(
-          "origin-[var(--kb-menu-content-transform-origin)] -ms-2 relative h-screen w-screen overflow-hidden backdrop-filter from-1% bg-gradient-to-b from-popover via-popover/20 to-popover/0 backdrop-blur-xl text-popover-foreground data-[expanded]:animate-in animate-out fade-out data-[expanded]:fade-in ease-in ",
+          "origin-[var(--kb-menu-content-transform-origin)] isolate -ms-2 relative h-screen w-screen overflow-hidden backdrop-filter from-1% bg-gradient-to-b from-popover via-popover/20 to-popover/0 backdrop-blur-xl text-popover-foreground data-[expanded]:animate-in animate-out fade-out data-[expanded]:fade-in ease-in ",
           local.class
         )}
       >
@@ -175,7 +177,7 @@ const NavigationMenuLink = <T extends ValidComponent = "a">(
   return (
     <NavigationMenuPrimitive.Item
       class={cn(
-        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors  hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
         local.class
       )}
       {...others}

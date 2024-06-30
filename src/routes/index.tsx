@@ -25,7 +25,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import {cn} from "~/lib/utils";
 import {SSRPortal} from "~/components/common/ssr-portal";
-import {For, Show} from "solid-js";
+import {For, Show, createSignal} from "solid-js";
 import {Icon} from "@iconify-icon/solid";
 import {ModeToggle} from "~/components/common/mode-toggle";
 
@@ -83,18 +83,24 @@ const items = [
 ];
 
 export default function Home() {
+  const [isHeaderOpen, setIsHeaderOpen] = createSignal(false);
   return (
     <>
       <SSRPortal>
-        <div class="fixed top-0 left-0 w-full bg-background z-10 flex">
+        <div
+          class={cn(
+            "fixed top-0 left-0 w-full z-10 flex duration-200 transition-all",
+            isHeaderOpen() && "bg-background"
+          )}
+        >
           <div class="max-w-screen-xl mx-auto flex w-full px-4 py-2">
             <Link
               href="/"
-              class="font-bold text-lg tracking-tighter mr-4 leading-9"
+              class="font-bold text-lg tracking-tighter leading-9 mr-auto"
             >
-              ⌘
+              ⌘ Acme.
             </Link>
-            <NavigationMenu>
+            <NavigationMenu class="hidden md:flex" onOpen={setIsHeaderOpen}>
               <NavigationMenuItem>
                 <NavigationMenuTrigger>
                   Features
@@ -125,7 +131,23 @@ export default function Home() {
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>
+                  Documentation
+                  <NavigationMenuIcon />
+                </NavigationMenuTrigger>
+                <NavigationMenuContent class="max-h-[calc(100vh-52px)] overflow-auto"></NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href="/dashboard"
+                  class={buttonVariants({variant: "ghost", size: "sm"})}
+                >
+                  Github
+                </NavigationMenuLink>
+              </NavigationMenuItem>
             </NavigationMenu>
+
             <div class="ml-auto flex gap-2 items-center">
               <ModeToggle />
               <Link
@@ -141,19 +163,37 @@ export default function Home() {
           </div>
         </div>
       </SSRPortal>
-      <main class="w-full space-y-2 flex flex-col justify-center relative pt-11 min-h-screen">
-        <section class="max-w-screen-xl mx-auto slide-in-from-bottom-10 animate-in duration-500 fade-in py-24 px-8">
+      <main class="w-full  space-y-2 flex flex-col justify-center relative min-h-screen">
+        <section class="max-w-screen-xl isolate relative w-full mx-auto slide-in-from-bottom-10 animate-in duration-500 fade-in py-24 px-8">
+          <div
+            class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+            aria-hidden="true"
+          >
+            <div
+              class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] animate-text bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+              style="clip-path:polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+            ></div>
+          </div>
+          <div
+            class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+            aria-hidden="true"
+          >
+            <div
+              class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 animate-text bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 opacity-40 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+              style="clip-path:polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+            ></div>
+          </div>
           <div class="flex flex-col gap-4 items-center transition-none justify-center">
-            <h1 class="text-balance tracking-tighter bg-gradient-to-tr from-primary/70 via-primary to-primary/60 bg-clip-text font-bold text-transparent text-3xl md:text-5xl">
+            <h1 class="text-balance text-center tracking-tighter bg-gradient-to-tr from-primary/70 via-primary to-primary/60 bg-clip-text font-bold text-transparent text-5xl md:text-6xl">
               This is a concrete start
             </h1>
             <p class="text-muted-foreground text-md md:text-lg lg:text-xl max-w-2xl text-center">
-              Meet the system for modern product development. Streamline issues,
-              projects, and product roadmaps.
+              A Solid Start Authentication starter template (email & OAuth).
+              Includes Lucia, Drizzle, HonoJS, tailwindcss and solid-ui
             </p>
             <div class="flex gap-4">
               <Button>Start Building</Button>
-              <Button variant={"outline"}>
+              <Button variant={"outline"} class="bg-background">
                 <Icon icon={"octicon:mark-github-16"} class="mr-2" />
                 Github
               </Button>
@@ -169,8 +209,8 @@ export default function Home() {
 
 function FooterSection() {
   return (
-    <footer class="w-full border-t">
-      <div class="max-w-screen-xl mx-auto p-4 text-xs text-muted-foreground">
+    <footer class="w-full bg-secondary/10 border-t">
+      <div class="max-w-screen-xl mx-auto p-4 text-xs text-muted-foreground text-center">
         Built with care by
         <Link
           href="https://blaise.deno.dev/"
@@ -182,15 +222,21 @@ function FooterSection() {
         >
           Blaise
         </Link>
+        , 2024
       </div>
     </footer>
   );
 }
 
 function FeatureSection() {
+  const [index, setIndex] = createSignal();
   return (
     <section class="w-full">
-      <Carousel opts={{loop: true}} plugins={[Autoplay({delay: 2000})]}>
+      <Carousel
+        opts={{loop: true}}
+        plugins={[Autoplay({delay: 2000})]}
+        onChange={console.log}
+      >
         <CarouselContent class="sm:px-0">
           <For each={items}>
             {(item) => (
