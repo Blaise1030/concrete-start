@@ -36,11 +36,11 @@ export default function Login(props: RouteSectionProps) {
           class="flex flex-col space-y-4"
           onSubmit={async (a) => {
             const searchParams = props.location?.search;
-            const redirect = new URLSearchParams(searchParams).get("path");
+            const red = new URLSearchParams(searchParams).get("path");
             let res = null;
             if (isSignUp()) res = await client.api.auth.signup.$post({json: a});
             else res = await client.api.auth.login.$post({json: a});
-            if (res.status === 200) navigate(redirect ?? "/");
+            if (res.status === 200) navigate(red ?? "/");
           }}
         >
           <Field name="email">

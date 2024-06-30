@@ -136,7 +136,20 @@ export default function Home() {
                   Documentation
                   <NavigationMenuIcon />
                 </NavigationMenuTrigger>
-                <NavigationMenuContent class="max-h-[calc(100vh-52px)] overflow-auto"></NavigationMenuContent>
+                <NavigationMenuContent class="max-h-[calc(100vh-52px)] overflow-auto">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <NavigationMenuLink
+                      href={""}
+                      class="col-span-1"
+                      target="_blank"
+                    >
+                      <NavigationMenuLabel>Deployment</NavigationMenuLabel>
+                      <NavigationMenuDescription>
+                        Guide to deploy your application
+                      </NavigationMenuDescription>
+                    </NavigationMenuLink>
+                  </div>
+                </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink
@@ -192,7 +205,7 @@ export default function Home() {
               Includes Lucia, Drizzle, HonoJS, tailwindcss and solid-ui
             </p>
             <div class="flex gap-4">
-              <Button>Start Building</Button>
+              <Button>Start building</Button>
               <Button variant={"outline"} class="bg-background">
                 <Icon icon={"octicon:mark-github-16"} class="mr-2" />
                 Github
