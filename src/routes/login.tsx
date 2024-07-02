@@ -42,8 +42,9 @@ export default function Login(props: RouteSectionProps) {
             const searchParams = props.location?.search;
             const red = new URLSearchParams(searchParams).get("path");
             let res = null;
-            if (isSignUp()) res = await client.api.auth.signup.$post({json: a});
-            else res = await client.api.auth.login.$post({json: a});
+            if (isSignUp())
+              res = await client().api.auth.signup.$post({json: a});
+            else res = await client().api.auth.login.$post({json: a});
             if (res.status === 200) navigate(red ?? "/");
           }}
         >

@@ -5,7 +5,7 @@ import {Suspense} from "solid-js";
 
 import "@fontsource/inter";
 import "./app.css";
-import {getCookie} from "vinxi/http";
+import {getCookie, getWebRequest} from "vinxi/http";
 import {
   cookieStorageManagerSSR,
   ColorModeScript,
@@ -16,8 +16,7 @@ import {Toaster} from "~/components/ui/toast";
 
 function getServerCookies() {
   "use server";
-  const colorMode = getCookie("kb-color-mode");
-  return colorMode ? `kb-color-mode=${colorMode}` : "";
+  return getWebRequest()?.headers?.get("Cookies") ?? "";
 }
 
 export default function App() {

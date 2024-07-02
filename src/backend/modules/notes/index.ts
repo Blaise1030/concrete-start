@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { authMiddleware } from '~/backend/middleware/auth';
 import { THonoType } from '~/backend';
 import { db } from "~/backend/db";
 import { noteTable } from "~/drizzle/schema";
