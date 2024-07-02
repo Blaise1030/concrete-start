@@ -24,6 +24,7 @@ import {Icon} from "@iconify-icon/solid";
 import {ModeToggle} from "~/components/common/mode-toggle";
 import {A} from "@solidjs/router";
 import BackgroundPattern from "~/components/common/background-pattern";
+import useCopyToClipboard from "~/hooks/useCopyToClipboard";
 
 const items = [
   {
@@ -82,6 +83,7 @@ const GITHUB_LINK = "https://github.com/Blaise1030/concrete-start";
 
 export default function Home() {
   const [isHeaderOpen, setIsHeaderOpen] = createSignal(false);
+  const [isCopied, copyToClipboard] = useCopyToClipboard();
   return (
     <>
       <SSRPortal>
@@ -187,7 +189,15 @@ export default function Home() {
               Includes Lucia, Drizzle, HonoJS, tailwindcss and solid-ui
             </p>
             <div class="flex gap-4">
-              <Button>Start building</Button>
+              <Button
+                onClick={() =>
+                  copyToClipboard(
+                    "git clone https://github.com/Blaise1030/concrete-start.git"
+                  )
+                }
+              >
+                Start building
+              </Button>
               <A
                 href={GITHUB_LINK}
                 target="_blank"
@@ -238,7 +248,7 @@ function FeatureSection() {
           <For each={items}>
             {(item) => (
               <CarouselItem class="p-0 px-2 py-4 md:max-w-lg max-w-[250px]">
-                <Card class="hover:shadow-lg duration-500 select-none aspect-[3/4] sm:aspect-video">
+                <Card class="hover:shadow-lg duration-500 select-none aspect-[3/4] sm:aspect-video bg-card/30 backdrop-blur">
                   <div class="flex flex-col p-4 justify-between space-y-8 h-full">
                     <CardTitle>{item.title}</CardTitle>
                     <div class="flex items-center justify-center">
