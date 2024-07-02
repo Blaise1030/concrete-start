@@ -1,12 +1,6 @@
 import {Link} from "~/components/link";
 import {Button, buttonVariants} from "~/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import {Card, CardTitle} from "~/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -28,6 +22,8 @@ import {SSRPortal} from "~/components/common/ssr-portal";
 import {For, Show, createSignal} from "solid-js";
 import {Icon} from "@iconify-icon/solid";
 import {ModeToggle} from "~/components/common/mode-toggle";
+import {A} from "@solidjs/router";
+import BackgroundPattern from "~/components/common/background-pattern";
 
 const items = [
   {
@@ -81,6 +77,8 @@ const items = [
     href: "https://www.solid-ui.com/",
   },
 ];
+
+const GITHUB_LINK = "https://github.com/Blaise1030/concrete-start";
 
 export default function Home() {
   const [isHeaderOpen, setIsHeaderOpen] = createSignal(false);
@@ -139,7 +137,7 @@ export default function Home() {
                 <NavigationMenuContent class="max-h-[calc(100vh-52px)] overflow-auto">
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <NavigationMenuLink
-                      href={""}
+                      href={"https://nitro.unjs.io/deploy"}
                       class="col-span-1"
                       target="_blank"
                     >
@@ -153,7 +151,8 @@ export default function Home() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink
-                  href="/dashboard"
+                  href={GITHUB_LINK}
+                  target="_blank"
                   class={buttonVariants({variant: "ghost", size: "sm"})}
                 >
                   Github
@@ -178,24 +177,7 @@ export default function Home() {
       </SSRPortal>
       <main class="w-full  space-y-2 flex flex-col justify-center relative min-h-screen">
         <section class="max-w-screen-xl isolate relative w-full mx-auto slide-in-from-bottom-10 animate-in duration-500 fade-in py-24 px-8">
-          <div
-            class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-            aria-hidden="true"
-          >
-            <div
-              class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] animate-text bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-              style="clip-path:polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-            ></div>
-          </div>
-          <div
-            class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-            aria-hidden="true"
-          >
-            <div
-              class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 animate-text bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 opacity-40 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-              style="clip-path:polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-            ></div>
-          </div>
+          <BackgroundPattern />
           <div class="flex flex-col gap-4 items-center transition-none justify-center">
             <h1 class="text-balance text-center tracking-tighter bg-gradient-to-tr from-primary/70 via-primary to-primary/60 bg-clip-text font-bold text-transparent text-5xl md:text-6xl">
               This is a concrete start
@@ -206,10 +188,17 @@ export default function Home() {
             </p>
             <div class="flex gap-4">
               <Button>Start building</Button>
-              <Button variant={"outline"} class="bg-background">
+              <A
+                href={GITHUB_LINK}
+                target="_blank"
+                class={cn(
+                  "bg-background",
+                  buttonVariants({variant: "outline"})
+                )}
+              >
                 <Icon icon={"octicon:mark-github-16"} class="mr-2" />
                 Github
-              </Button>
+              </A>
             </div>
           </div>
         </section>
@@ -242,14 +231,9 @@ function FooterSection() {
 }
 
 function FeatureSection() {
-  const [index, setIndex] = createSignal();
   return (
     <section class="w-full">
-      <Carousel
-        opts={{loop: true}}
-        plugins={[Autoplay({delay: 2000})]}
-        onChange={console.log}
-      >
+      <Carousel opts={{loop: true}} plugins={[Autoplay({delay: 2000})]}>
         <CarouselContent class="sm:px-0">
           <For each={items}>
             {(item) => (

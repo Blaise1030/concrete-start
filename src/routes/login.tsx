@@ -13,6 +13,7 @@ import {
 import {createForm, zodForm} from "@modular-forms/solid";
 import {LoginSchema, TLoginSchema} from "~/schema/LoginSchema";
 import {client} from "~/lib/api";
+import BackgroundPattern from "~/components/common/background-pattern";
 
 export default function Login(props: RouteSectionProps) {
   const navigate = useNavigate();
@@ -23,9 +24,12 @@ export default function Login(props: RouteSectionProps) {
   });
 
   return (
-    <main class="flex items-center h-screen">
+    <main class="flex items-center h-screen relative overflow-hidden isolate">
+      <BackgroundPattern />
       <div class="fixed top-4 left-0 w-full text-center p-2 z-10">
-        <Link href="/">⌘</Link>
+        <Link href="/" class="font-bold">
+          ⌘
+        </Link>
       </div>
       <div class="p-4 flex flex-col space-y-4 max-w-sm mx-auto w-full">
         <p class="text-center text-2xl font-bold">
