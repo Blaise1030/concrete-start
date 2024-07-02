@@ -1,7 +1,14 @@
 import { relations } from "drizzle-orm";
 import { integer, text, sqliteTable } from "drizzle-orm/sqlite-core";
-import { Google } from "arctic";
 
+export const noteTable = sqliteTable('note', {
+  id: text('id').notNull().primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id),
+  noteTitle: text('title'),
+  noteContent: text('noteContent'),
+})
 
 export const userTable = sqliteTable("user", {
   id: text("id").notNull().primaryKey(),
@@ -37,3 +44,10 @@ export const oAuthTableUserRelations = relations(oAuthTable, ({ one }) => ({
     references: [userTable.id],
   }),
 }));
+
+export const noteTableUserRelations = relations(noteTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [noteTable.userId],
+    references: [userTable.id],
+  }),
+}))

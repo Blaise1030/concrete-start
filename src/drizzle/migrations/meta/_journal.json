@@ -15,6 +15,13 @@
       "when": 1719334244212,
       "tag": "0001_glorious_scarlet_spider",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1719922891563,
+      "tag": "0002_bitter_dazzler",
+      "breakpoints": true
     }
   ]
 }
