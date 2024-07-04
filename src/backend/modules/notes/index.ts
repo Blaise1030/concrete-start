@@ -15,6 +15,13 @@ export const notes = new Hono<THonoType>()
     return c.json({
       data: res.map(({ id, noteContent, noteTitle }) => ({ id, noteContent, noteTitle }))
     })
+  }).get('/note/:id', async (c) => {
+    const id = c.req.param('id')
+    const user = c.get('user')
+    const res = await db.select().from(noteTable).where(and(eq(noteTable.userId, user?.id ?? ''), eq(noteTable.id, id)))
+    return c.json({
+      data: res.map(({ id, noteContent, noteTitle }) => ({ id, noteContent, noteTitle }))
+    })
   }).put('/note', zValidator('json', NoteSchema), async (c) => {
     const { id, noteContent, noteTitle } = c.req.valid('json')
     const user = c.get('user')

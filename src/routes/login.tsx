@@ -51,7 +51,7 @@ export default function Login(props: RouteSectionProps) {
           <Field name="email">
             {(field, props) => (
               <TextField
-                class="flex flex-col space-y-1"
+                class="flex flex-col space-y-2"
                 disabled={form.submitting}
               >
                 <TextFieldLabel for="email">Email</TextFieldLabel>
@@ -70,7 +70,7 @@ export default function Login(props: RouteSectionProps) {
           <Field name="password">
             {(field, props) => (
               <TextField
-                class="flex flex-col space-y-1"
+                class="flex flex-col space-y-2"
                 disabled={form.submitting}
               >
                 <TextFieldLabel for="password">Password</TextFieldLabel>
@@ -106,7 +106,7 @@ export default function Login(props: RouteSectionProps) {
           </Button>
         </div>
         <div class="w-full flex py-3 relative">
-          <p class="absolute bg-background left-[50%] text-sm text-muted-foreground -translate-x-[50%] -translate-y-[50%] px-2">
+          <p class="absolute left-[50%] text-sm text-muted-foreground -translate-x-[50%] -translate-y-[50%] px-2">
             OR
           </p>
           <Separator />
