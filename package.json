@@ -19,6 +19,7 @@
     "@fontsource/inter": "^5.0.18",
     "@hono/zod-validator": "^0.2.2",
     "@kobalte/core": "^0.13.3",
+    "@libsql/client": "^0.7.0",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@lucia-auth/adapter-sqlite": "^3.0.1",
     "@modular-forms/solid": "^0.22.1",

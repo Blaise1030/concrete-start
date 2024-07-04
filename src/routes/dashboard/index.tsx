@@ -129,7 +129,7 @@ export default function Dashboard() {
               size={"sm"}
             >
               <Show when={isLoading()}>
-                <Icon icon="lucide:loader-circle" class="mr-1" />
+                <Icon icon="lucide:loader-circle" class="mr-1 animate-spin" />
               </Show>
               Delete
             </Button>
